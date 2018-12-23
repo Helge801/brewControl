@@ -9,10 +9,10 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-var db *sql.DB
+var DB *sql.DB
 
 func InitializeDB() {
-	db = setupDB()
+	DB = setupDB()
 }
 
 func setupDB() *sql.DB {
@@ -28,14 +28,14 @@ func setupDB() *sql.DB {
 
 // InsertEntry ads a temp reading to the database
 func InsertEntry(temp float32) {
-	statement, e := db.Prepare(fmt.Sprintf("INSERT INTO templog (temp, time) VALUES (%v, DATETIME('now'))", temp))
+	statement, e := DB.Prepare(fmt.Sprintf("INSERT INTO templog (temp, time) VALUES (%v, DATETIME('now'))", temp))
 	err(e)
 	statement.Exec()
 }
 
 func GetLatestLogs() []byte {
 	logs := []string{}
-	rows, e := db.Query("select * from (select * from logs order by time ASC limit 10) order by time DESC")
+	rows, e := DB.Query("select * from (select * from logs order by time ASC limit 10) order by time DESC")
 	if e != nil {
 		NonFatal(e)
 		return []byte("Error getting logs")
