@@ -2,13 +2,14 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"math/rand"
 )
 
 // AdLog ads a log entry to the database that can be later retrieved
 func AdLog(message string) {
 	statement, e := DB.Prepare(fmt.Sprintf("INSERT INTO logs (log, time) VALUES (%v, DATETIME('now'))", message))
-	err(e)
+	log.Println(e)
 	statement.Exec()
 }
 
