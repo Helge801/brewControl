@@ -17,6 +17,9 @@ var reg = regexp.MustCompile(`\st=(\d+)`)
 const interval = time.Second * 10
 
 // RunLoop lets temp loop run as long as it's bookean value is true
+// This var should probably have a mutex to protect against race conditions
+// but it is only intended to be written too once to start and once to end
+// so I'm just going to leave it for now.
 var RunLoop = false
 
 // StartMonitor begins monitoring temp from prob and adding DB entries with readings

@@ -1,40 +1,29 @@
 package main
 
 import (
-	"fmt"
-	"log"
+	"errors"
 	"net/http"
 )
 
-// HandleShutdown gracefully shuts it down
+// HandleShutdown handles request to /shutdown and gracefully shuts it down
 func HandleShutdown(w http.ResponseWriter, r *http.Request) {
-	// Start temp recording here
-}
-
-// HandleRoot http requests to / and serves react frontend
-func HandleRoot(w http.ResponseWriter, r *http.Request) {
-	// serve react frontend here
+	// Initial implimentation is not so gracefull I admit but the deferal in tempMonitor should shut everything down properly
+	Fatal(errors.New("Shutting Down"))
 }
 
 // HandleSubscribe handles requests to /subscribe and upgrades connection to websocket to serve live data readings
 func HandleSubscribe(w http.ResponseWriter, r *http.Request) {
 	socket, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
-		log.Println(err)
+		w.Write([]byte("error connecting with websocket"))
 		return
 	}
-	for {
-		msgType, msg, err := socket.ReadMessage()
-		if err != nil {
-			log.Println(err)
-			return
-		}
-		fmt.Println(msgType)
-		fmt.Println(string(msg))
-		err = socket.WriteMessage(msgType, msg)
-	}
+	hashKey := RandomKey()
+	Subscribers[hashKey] = socket
 }
 
-func HandleGetLogs() {
-
+// HandleGetLogs handles requests to /logs and returns a JSON object containing the last 100 logs
+func HandleGetLogs(w http.ResponseWriter, r *http.Request) {
+	mJSON := GetLatestLogs()
+	w.Write(mJSON)
 }

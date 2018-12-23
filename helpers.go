@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math/rand"
+)
 
 // AdLog ads a log entry to the database that can be later retrieved
 func AdLog(message string) {
@@ -24,4 +27,14 @@ func NonFatal(e error) bool {
 		return true
 	}
 	return false
+}
+
+// RandomKey generates and return a randow hash key to use as connection ids
+func RandomKey() string {
+	len := 10
+	bytes := make([]byte, len)
+	for i := 0; i < len; i++ {
+		bytes[i] = byte(65 + rand.Intn(25)) //A=65 and Z = 65+25
+	}
+	return string(bytes)
 }
