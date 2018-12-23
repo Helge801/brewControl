@@ -20,8 +20,8 @@ var upgrader = websocket.Upgrader{
 }
 
 func main() {
-	http.HandleFunc("/", HandleView)
-	http.ListenAndServe(":4000", nil)
+	StartMonitor()
+	StartServer()
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {

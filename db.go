@@ -11,7 +11,6 @@ var db *sql.DB
 
 func main() {
 	db = setupDB()
-	insertEntry(12.2)
 
 	rows, e := db.Query("SELECT temp, time FROM templog WHERE time <= '2018-12-23 02:37:00' AND time > '2018-12-23 02:27:32'")
 	err(e)
@@ -20,7 +19,6 @@ func main() {
 	for rows.Next() {
 		rows.Scan(&temp, &time)
 		fmt.Println(temp + " " + time)
-
 	}
 
 }
@@ -36,7 +34,8 @@ func setupDB() *sql.DB {
 	return database
 }
 
-func insertEntry(temp float32) {
+// InsertEntry ads a temp reading to the database
+func InsertEntry(temp float32) {
 	statement, e := db.Prepare(fmt.Sprintf("INSERT INTO templog (temp, time) VALUES (%v, DATETIME('now'))", temp))
 	err(e)
 	statement.Exec()
