@@ -43,7 +43,7 @@ func InsertEntry(temp float32) {
 
 func GetLatestLogs() []byte {
 	logs := []string{}
-	rows, e := DB.Query("select * from (select * from logs order by time ASC limit 10) order by time DESC")
+	rows, e := DB.Query("SELECT * FROM (SELECT time, log FROM logs ORDER BY time ASC limit 10) ORDER BY TIME DESC")
 	if e != nil {
 		NonFatal(e)
 		return []byte("Error getting logs")

@@ -4,12 +4,19 @@ import (
 	"net/http"
 	"os"
 	"time"
+	"encoding/json"
 )
 
 // HandleShutdown handles request to /shutdown and gracefully shuts it down
 func HandleShutdown(w http.ResponseWriter, r *http.Request) {
 	// Initial implimentation is not so gracefull I admit but the deferal in tempMonitor should shut everything down properly
-	w.Write([]byte("Shutting Down"))
+	m := []string{"shutting Down"}
+	mJSON, _ := json.Marshal(m)
+	go shutdown()
+	w.Write(mJSON)	
+}
+
+func shutdown(){
 	RunLoop = false
 	time.Sleep(time.Second * 11)
 	os.Exit(1)

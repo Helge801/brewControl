@@ -57,6 +57,7 @@ func runCheckLoop(pin rpio.Pin, path string) {
 			temp = (temp * 1.8) + 32.0
 			temp = math.Floor(temp*10) / 10
 			InsertEntry(float32(temp))
+			SendEntry(float32(temp))
 			if temp < 72.0 {
 				pin.High()
 			} else {
