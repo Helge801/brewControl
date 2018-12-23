@@ -23,7 +23,7 @@ func StartServer() {
 	http.HandleFunc("/subscribe", HandleSubscribe)
 	http.HandleFunc("/shutdown", HandleShutdown)
 	http.HandleFunc("/logs", HandleLogs)
-	http.HandleFunc("/logs", HandleGetRecords)
+	http.HandleFunc("/getrecords", HandleGetRecords)
 	http.ListenAndServe(":4000", nil)
 }
 

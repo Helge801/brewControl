@@ -41,4 +41,5 @@ func HandleLogs(w http.ResponseWriter, r *http.Request) {
 
 func HandleGetRecords(w http.ResponseWriter, r *http.Request) {
 	mJSON := GetRecords()
+	w.Write(mJSON)
 }
