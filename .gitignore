@@ -1,1 +1,2 @@
-./brewtemps.db
+# ignore database
+brewtemps.db
