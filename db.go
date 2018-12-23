@@ -16,13 +16,20 @@ func InitializeDB() {
 }
 
 func setupDB() *sql.DB {
+	AdLog("Setting up DataBase")
 	database, e := sql.Open("sqlite3", "./brewtemp.db")
 	err(e)
+	AdLog("Adding table templog")
 	statement, e := database.Prepare("CREATE TABLE IF NOT EXISTS templog (id INTEGER PRIMARY KEY AUTOINCREMENT, temp DECIMAL(4,1), time SMALLDATETIME)")
 	err(e)
+	_, e = statement.Exec()
+	err(e)
+	AdLog("adding table logs")
 	statement, e = database.Prepare("CREATE TABLE IF NOT EXISTS logs (id INTEGER PRIMARY KEY AUTOINCREMENT, log STRING, time SMALLDATETIME)")
 	err(e)
-	statement.Exec()
+	_, e = statement.Exec()
+	err(e)
+	AdLog("Database setup successfully")
 	return database
 }
 

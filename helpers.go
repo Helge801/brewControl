@@ -9,7 +9,10 @@ import (
 // AdLog ads a log entry to the database that can be later retrieved
 func AdLog(message string) {
 	statement, e := DB.Prepare("INSERT INTO logs (log, time) VALUES (\"" + message + "\", DATETIME('now'))")
-	log.Println(e)
+	log.Println(message)
+	if e != nil {
+		log.Println(e)
+	}
 	statement.Exec()
 }
 
