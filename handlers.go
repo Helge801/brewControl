@@ -2,8 +2,8 @@ package main
 
 import (
 	"net/http"
-	"time"
 	"os"
+	"time"
 )
 
 // HandleShutdown handles request to /shutdown and gracefully shuts it down
