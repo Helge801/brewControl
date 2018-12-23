@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"strconv"
 
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -57,6 +58,34 @@ func GetLatestLogs() []byte {
 	mJSON, e := json.Marshal(logs)
 	if e != nil {
 		NonFatal(errors.New("Could notmarshal logs to JSON"))
+	}
+	return mJSON
+}
+
+func GetRecords() []byte {
+	records := []Entry{}
+	rows, e := DB.Query("SELECT time, temp FROM templog")
+	if e != nil {
+		NonFatal(e)
+		return []byte("Error getting records")
+	}
+	var time string
+	var temp string
+	for rows.Next() {
+		rows.Scan(&time, &temp)
+		fTEMP, e := strconv.ParseFloat(temp, 32)
+		if e != nil {
+			log.Println("cannot parse temp")
+			continue
+		}
+		records = append(records, Entry{
+			Time: time,
+			Temp: float32(fTEMP),
+		})
+	}
+	mJSON, e := json.Marshal(records)
+	if e != nil {
+		NonFatal(errors.New("Could notmarshal records to JSON"))
 	}
 	return mJSON
 }

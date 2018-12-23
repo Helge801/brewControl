@@ -1,10 +1,10 @@
 package main
 
 import (
+	"encoding/json"
 	"net/http"
 	"os"
 	"time"
-	"encoding/json"
 )
 
 // HandleShutdown handles request to /shutdown and gracefully shuts it down
@@ -13,10 +13,10 @@ func HandleShutdown(w http.ResponseWriter, r *http.Request) {
 	m := []string{"shutting Down"}
 	mJSON, _ := json.Marshal(m)
 	go shutdown()
-	w.Write(mJSON)	
+	w.Write(mJSON)
 }
 
-func shutdown(){
+func shutdown() {
 	RunLoop = false
 	time.Sleep(time.Second * 11)
 	os.Exit(1)
@@ -34,7 +34,11 @@ func HandleSubscribe(w http.ResponseWriter, r *http.Request) {
 }
 
 // HandleGetLogs handles requests to /logs and returns a JSON object containing the last 100 logs
-func HandleGetLogs(w http.ResponseWriter, r *http.Request) {
+func HandleLogs(w http.ResponseWriter, r *http.Request) {
 	mJSON := GetLatestLogs()
 	w.Write(mJSON)
+}
+
+func HandleGetRecords(w http.ResponseWriter, r *http.Request) {
+	mJSON := GetRecords()
 }
