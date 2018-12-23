@@ -17,7 +17,7 @@ func InitializeDB() {
 
 func setupDB() *sql.DB {
 	AdLog("Setting up DataBase")
-	database, e := sql.Open("sqlite3", "./brewtemp.db")
+	database, e := sql.Open("sqlite3", "brewtemp.db")
 	err(e)
 	AdLog("Adding table templog")
 	statement, e := database.Prepare("CREATE TABLE IF NOT EXISTS templog (id INTEGER PRIMARY KEY AUTOINCREMENT, temp DECIMAL(4,1), time SMALLDATETIME)")
