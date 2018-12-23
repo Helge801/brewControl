@@ -8,7 +8,7 @@ import (
 
 // AdLog ads a log entry to the database that can be later retrieved
 func AdLog(message string) {
-	statement, e := DB.Prepare(fmt.Sprintf("INSERT INTO logs (log, time) VALUES (%v, DATETIME('now'))", message))
+	statement, e := DB.Prepare("INSERT INTO logs (log, time) VALUES (\"" + message + "\", DATETIME('now'))")
 	log.Println(e)
 	statement.Exec()
 }
