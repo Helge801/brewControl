@@ -1,14 +1,18 @@
 package main
 
 import (
-	"errors"
 	"net/http"
+	"time"
+	"os"
 )
 
 // HandleShutdown handles request to /shutdown and gracefully shuts it down
 func HandleShutdown(w http.ResponseWriter, r *http.Request) {
 	// Initial implimentation is not so gracefull I admit but the deferal in tempMonitor should shut everything down properly
-	Fatal(errors.New("Shutting Down"))
+	w.Write([]byte("Shutting Down"))
+	RunLoop = false
+	time.Sleep(time.Second * 11)
+	os.Exit(1)
 }
 
 // HandleSubscribe handles requests to /subscribe and upgrades connection to websocket to serve live data readings
