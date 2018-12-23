@@ -13,16 +13,6 @@ var db *sql.DB
 
 func InitializeDB() {
 	db = setupDB()
-
-	rows, e := db.Query("SELECT temp, time FROM templog WHERE time <= '2018-12-23 02:37:00' AND time > '2018-12-23 02:27:32'")
-	err(e)
-	var temp string
-	var time string
-	for rows.Next() {
-		rows.Scan(&temp, &time)
-		fmt.Println(temp + " " + time)
-	}
-
 }
 
 func setupDB() *sql.DB {
@@ -52,10 +42,8 @@ func GetLatestLogs() []byte {
 	}
 	var time string
 	var log string
-	rows.Scan(&time)
-	logs = append(logs, time+": "+log)
 	for rows.Next() {
-		rows.Scan(&time)
+		rows.Scan(&time, &log)
 		logs = append(logs, time+": "+log)
 	}
 	mJSON, e := json.Marshal(logs)
